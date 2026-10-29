@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <clocale>
+#include <vector>
 using namespace std;
 
 class Student
@@ -8,12 +9,138 @@ class Student
 
 public:
     string name;
-    int age, grade;
+    int age, birth;
+    vector<int> grade;
+    vector<string> discipline;
 };
 
-int add()
+#include <iomanip>
+#include <sstream>
+
+// Печать ячейки с учётом русских букв UTF-8
+void printCell(const string &text, int width)
 {
-    return 0;
+    int length = 0;
+
+    for (unsigned char c : text)
+    {
+        if ((c & 0xC0) != 0x80)
+            length++;
+    }
+
+    cout << "| " << text;
+
+    for (int i = length; i < width; i++)
+        cout << " ";
+
+    cout << " ";
+}
+
+void show_table(const vector<Student> &students)
+{
+    if (students.empty())
+    {
+        cout << "База студентов пуста!\n";
+        return;
+    }
+
+    cout << "\nБАЗА ДАННЫХ СТУДЕНТОВ\n";
+
+    // Заголовок таблицы
+    printCell("N", 4);
+    printCell("ФИО", 35);
+    printCell("Год", 6);
+    printCell("Курс", 6);
+    printCell("Оценки", 16);
+    printCell("Средний", 10);
+    cout << "|\n";
+
+    cout << string(96, '-') << "\n";
+
+    for (int i = 0; i < students.size(); i++)
+    {
+        const Student &s = students[i];
+
+        printCell(to_string(i + 1), 4);
+        printCell(s.name, 35);
+        printCell(to_string(s.birth), 6);
+        printCell(to_string(s.course), 6);
+
+        // Собираем оценки в одну строку
+        string grades;
+        double sum = 0;
+
+        for (int j = 0; j < s.grade.size(); j++)
+        {
+            grades += to_string(s.grade[j]) + " ";
+            sum += s.grade[j];
+        }
+
+        printCell(grades, 16);
+
+        // Вычисляем средний балл
+        double average = 0;
+
+        if (!s.grade.empty())
+            average = sum / s.grade.size();
+
+        ostringstream result;
+        result << fixed << setprecision(2) << average;
+
+        printCell(result.str(), 10);
+        cout << "|\n";
+    }
+
+    cout << string(96, '-') << "\n";
+}
+
+void add(vector<Student> &students)
+{
+    char choice = 'y';
+
+    while (choice == 'y')
+    {
+        Student s;
+
+        cout << "Введите ФИО студента: ";
+        getline(cin >> ws, s.name);
+
+        cout << "Введите год рождения: ";
+        cin >> s.birth;
+
+        cout << "Введите количество предметов: ";
+        int count;
+        cin >> count;
+
+        // Ввод предметов
+        for (int i = 0; i < count; i++)
+        {
+            string discipline;
+
+            cout << "Введите предмет: ";
+            getline(cin >> ws, discipline);
+
+            s.discipline.push_back(discipline);
+        }
+
+        // Ввод оценок
+        for (int j = 0; j < s.discipline.size(); j++)
+        {
+            int grade;
+
+            cout << "Введите оценку по " << s.discipline[j] << ": ";
+
+            cin >> grade;
+
+            s.grade.push_back(grade);
+        }
+
+        // Добавляем готового студента
+        students.push_back(s);
+
+        cout << "Добавить ещё студента? (y/n): ";
+        cin >> choice;
+    }
 }
 
 int del()
@@ -31,8 +158,20 @@ int upload_base_bin()
     return 0;
 }
 
-int show_table()
+int show_table(vector<Student> &students)
 {
+    for (int i = 0; i < students.size(); i++)
+    {
+        cout << "Имя\tГод рождения\tПредмет\tОценка" << endl;
+        cout << students[i].name << "\t";
+        cout << students[i].birth << "\t";
+        for (int j = 0; j < students[i].discipline.size(); j++)
+        {
+            cout << students[i].discipline[j] << endl;
+            cout << students[i].grade[j] << endl;
+        }
+        cout << "-------------" << endl;
+    }
     return 0;
 }
 
@@ -59,6 +198,7 @@ int txt_to_bin()
 int choise()
 {
     int flag = 1;
+    vector<Student> students;
     while (flag != 0)
     {
         cout << "Выберите действие:" << endl;
@@ -77,7 +217,7 @@ int choise()
             switch (pick)
             {
             case 1:
-                add();
+                add(students);
                 break;
 
             case 2:
@@ -92,7 +232,7 @@ int choise()
                 upload_base_bin();
                 break;
             case 5:
-                show_table();
+                show_table(students);
                 break;
 
             case 6:
@@ -117,6 +257,7 @@ int choise()
         }
     }
     cout << "До свидания!";
+    return 0;
 }
 
 int main()

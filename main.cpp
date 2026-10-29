@@ -1,73 +1,79 @@
 #include <iostream>
 #include <string>
+#include <clocale>
 using namespace std;
 
+class Student
+{
 
-class Student{
-
-    public:
-        string name;
-        int age,grade;
-
+public:
+    string name;
+    int age, grade;
 };
 
-
-
-int add(){
-    Student student1;
-    cout<<"Введите ФИО:";
-    string n;
-    cin>>n;
-    Student:student1;
-    student1.name =n
-
+int add()
+{
+    return 0;
 }
 
-int del(){
-
+int del()
+{
+    return 0;
 }
 
-int upload_base_txt(){
-
+int upload_base_txt()
+{
+    return 0;
 }
 
-int upload_base_bin(){
-
+int upload_base_bin()
+{
+    return 0;
 }
 
-int show_table(){
-
+int show_table()
+{
+    return 0;
 }
 
-int write_in_file(){
-
+int write_in_file()
+{
+    return 0;
 }
 
-int re_information(){
-
+int re_information()
+{
+    return 0;
 }
 
-int sort(){
-
+int sort()
+{
+    return 0;
 }
 
-int txt_to_bin(){
-
+int txt_to_bin()
+{
+    return 0;
 }
 
-int choise(){
-    int flag =1;
-    while(flag!=0){
-        cout <<"Выберите действие:"<<endl;
-        cout <<"1. Добавить студента\n2.Удалить студента\n3.Загрузить базу данных(Текстовый файл)\n4.Загрузить базу данных(Бинарный файл)\n";
-        cout<<"5.Вывести таблицу\n6.Записать данные в файл\n7.Редактирование информации\n8.Сортировка\n9.Перевод из текстого файла в бинарный\n0.Выход";
+int choise()
+{
+    int flag = 1;
+    while (flag != 0)
+    {
+        cout << "Выберите действие:" << endl;
+        cout << "1. Добавить студента\n2.Удалить студента\n3.Загрузить базу данных(Текстовый файл)\n4.Загрузить базу данных(Бинарный файл)\n";
+        cout << "5.Вывести таблицу\n6.Записать данные в файл\n7.Редактирование информации\n8.Сортировка\n9.Перевод из текстого файла в бинарный\n0.Выход\n";
 
         int pick;
-        cin>>pick;
+        cin >> pick;
 
-        if (pick ==0){
+        if (pick == 0)
+        {
             flag = 0;
-         }else{
+        }
+        else
+        {
             switch (pick)
             {
             case 1:
@@ -105,20 +111,18 @@ int choise(){
                 break;
 
             default:
-                cout<<"Неправильный ввод!";
+                cout << "Неправильный ввод!";
                 break;
             }
-         }
         }
-        cout<<"До свидания!";
+    }
+    cout << "До свидания!";
 }
 
-
-
-
-
-int main(){
-    cout<<"Здравствуйте!\n";
+int main()
+{
+    setlocale(LC_ALL, ".UTF8");
+    cout << "Здравствуйте!\n";
     choise();
     return 0;
 }
